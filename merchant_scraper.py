@@ -47,13 +47,15 @@ def scrape():
         if item.text in card_list:
             available_cards.append(item.text)
 
+    driver.close()
+
+    return available_cards
+
+
+if __name__ == "__main__":
+    available_cards = scrape()
+
     if len(available_cards) > 0:
         print("Available Cards:")
         for card in available_cards:
             print(card)
-
-    driver.close()
-
-
-if __name__ == "__main__":
-    scrape()
