@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
@@ -33,9 +33,13 @@ def scrape():
     server_select = Select(server)
     server_select.select_by_index(2)
 
-    WebDriverWait(driver, 20).until(
-        EC.presence_of_element_located((By.CLASS_NAME, "item"))
-    )
+    try:
+        WebDriverWait(driver, 20).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "item"))
+        )
+    except:
+        driver.close()
+        return []
 
     soup = BeautifulSoup(driver.page_source, "html.parser")
 
@@ -54,7 +58,6 @@ def scrape():
 
 if __name__ == "__main__":
     available_cards = scrape()
-
     if len(available_cards) > 0:
         print("Available Cards:")
         for card in available_cards:
