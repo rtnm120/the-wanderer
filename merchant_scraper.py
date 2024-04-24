@@ -18,7 +18,9 @@ def scrape():
         "Varkan",
     ]
 
-    driver = webdriver.Firefox()
+    options = webdriver.FirefoxOptions()
+    options.add_argument("-headless")
+    driver = webdriver.Firefox(options=options)
     driver.get("https://lostmerchants.com")
 
     WebDriverWait(driver, 20).until(
@@ -39,7 +41,7 @@ def scrape():
         )
     except:
         driver.close()
-        return []
+        return
 
     soup = BeautifulSoup(driver.page_source, "html.parser")
 
@@ -62,3 +64,5 @@ if __name__ == "__main__":
         print("Available Cards:")
         for card in available_cards:
             print(card)
+    else:
+        print("No Cards Available")
