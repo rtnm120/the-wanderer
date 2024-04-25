@@ -38,6 +38,7 @@ class Bot(commands.Bot):
         self.stock = merchant_scraper.scrape()
 
         if len(self.stock):
+            self.check_vendors = False
             channel = self.get_channel(channel_id)
             stock_str = ", ".join(self.stock)
 
