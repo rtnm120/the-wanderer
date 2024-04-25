@@ -4,6 +4,7 @@ import datetime
 from nextcord.ext import tasks, commands
 from dotenv import load_dotenv
 import merchant_scraper
+import epoch_calc
 
 load_dotenv()
 
@@ -41,8 +42,11 @@ class Bot(commands.Bot):
             self.check_vendors = False
             channel = self.get_channel(channel_id)
             stock_str = ", ".join(self.stock)
+            expiration = epoch_calc.get_epoch()
 
-            await channel.send(f"{mention_role}\nNew cards available:\n{stock_str}")
+            await channel.send(
+                f"{mention_role}\nNew cards available:\n{stock_str}\n\nAvailable until <t:{expiration}:t>"
+            )
 
     @update_stock.before_loop
     async def before_update_stock(self):
