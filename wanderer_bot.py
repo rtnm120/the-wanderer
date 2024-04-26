@@ -37,8 +37,6 @@ class Bot(commands.Bot):
             return
 
         self.stock = merchant_scraper.scrape()
-        print(self.stock)
-        print(len(self.stock["Rare"]))
 
         if self.stock["Legendary"] or self.stock["Epic"] or self.stock["Rare"]:
             self.check_vendors = False
@@ -63,7 +61,6 @@ class Bot(commands.Bot):
                 stock_str += rare_stock + "\n"
 
             stock_str += "```"
-            print(stock_str)
             expiration = epoch_calc.get_epoch()
 
             await channel.send(
