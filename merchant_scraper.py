@@ -16,6 +16,9 @@ def scrape():
         "Balthorr",
         "Vairgrys",
         "Varkan",
+        "Seria",
+        "Thar",
+        "Krause",
     ]
 
     options = webdriver.FirefoxOptions()
@@ -46,12 +49,26 @@ def scrape():
     soup = BeautifulSoup(driver.page_source, "html.parser")
 
     legendary_items = soup.find_all(class_="rarity--Legendary")
+    epic_items = soup.find_all(class_="rarity--Epic")
+    rare_items = soup.find_all(class_="rarity--Rare")
 
-    available_cards = []
+    available_cards = {
+        "Legendary": [],
+        "Epic": [],
+        "Rare": [],
+    }
 
     for item in legendary_items:
         if item.text in card_list:
-            available_cards.append(item.text)
+            available_cards["Legendary"].append(item.text)
+
+    for item in epic_items:
+        if item.text in card_list:
+            available_cards["Epic"].append(item.text)
+
+    for item in rare_items:
+        if item.text in card_list:
+            available_cards["Rare"].append(item.text)
 
     driver.close()
 
@@ -60,9 +77,17 @@ def scrape():
 
 if __name__ == "__main__":
     available_cards = scrape()
-    if len(available_cards) > 0:
+    if (
+        len(available_cards["Legendary"])
+        or len(available_cards["Epic"])
+        or len(available_cards["Rare"])
+    ):
         print("Available Cards:")
-        for card in available_cards:
+        for card in available_cards["Legendary"]:
+            print(card)
+        for card in available_cards["Epic"]:
+            print(card)
+        for card in available_cards["Rare"]:
             print(card)
     else:
         print("No Cards Available")
