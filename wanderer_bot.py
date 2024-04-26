@@ -37,15 +37,37 @@ class Bot(commands.Bot):
             return
 
         self.stock = merchant_scraper.scrape()
+        print(self.stock)
+        print(len(self.stock["Rare"]))
 
-        if len(self.stock):
+        if self.stock["Legendary"] or self.stock["Epic"] or self.stock["Rare"]:
             self.check_vendors = False
             channel = self.get_channel(channel_id)
-            stock_str = ", ".join(self.stock)
+            legendary_stock = ""
+            epic_stock = ""
+            rare_stock = ""
+
+            if self.stock["Legendary"]:
+                legendary_stock = ", ".join(self.stock["Legendary"])
+            if self.stock["Epic"]:
+                epic_stock = ", ".join(self.stock["Epic"])
+            if self.stock["Rare"]:
+                rare_stock = ", ".join(self.stock["Rare"])
+
+            stock_str = "```ansi\n"
+            if len(legendary_stock):
+                stock_str += legendary_stock + "\n"
+            if len(epic_stock):
+                stock_str += epic_stock + "\n"
+            if len(rare_stock):
+                stock_str += rare_stock + "\n"
+
+            stock_str += "```"
+            print(stock_str)
             expiration = epoch_calc.get_epoch()
 
             await channel.send(
-                f"{mention_role}\nNew cards available:\n{stock_str}\n\nAvailable until <t:{expiration}:t>"
+                f"{mention_role}{stock_str}Available until <t:{expiration}:t>"
             )
 
     @update_stock.before_loop
