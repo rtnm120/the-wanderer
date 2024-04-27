@@ -15,10 +15,10 @@ mention_role = f"<@&{role_id}>"
 utc = datetime.timezone.utc
 
 times = [
-    datetime.time(hour=5, tzinfo=utc),
-    datetime.time(hour=11, tzinfo=utc),
-    datetime.time(hour=17, tzinfo=utc),
-    datetime.time(hour=23, tzinfo=utc),
+    datetime.time(hour=5, minute=1, tzinfo=utc),
+    datetime.time(hour=11, minute=1, tzinfo=utc),
+    datetime.time(hour=17, minute=1, tzinfo=utc),
+    datetime.time(hour=23, minute=1, tzinfo=utc),
 ]
 
 
@@ -31,7 +31,7 @@ class Bot(commands.Bot):
         self.reset_stock.start()
         self.update_stock.start()
 
-    @tasks.loop(minutes=30)
+    @tasks.loop(minutes=2)
     async def update_stock(self):
         if not self.check_vendors:
             return
@@ -54,11 +54,11 @@ class Bot(commands.Bot):
 
             stock_str = "```ansi\n"
             if len(legendary_stock):
-                stock_str += legendary_stock + "\n"
+                stock_str += "[0;33m" + legendary_stock + "[0;0m\n"
             if len(epic_stock):
-                stock_str += epic_stock + "\n"
+                stock_str += "[0;35m" + epic_stock + "[0;0m\n"
             if len(rare_stock):
-                stock_str += rare_stock + "\n"
+                stock_str += "[0;34m" + rare_stock + "[0;0m\n"
 
             stock_str += "```"
             expiration = epoch_calc.get_epoch()
