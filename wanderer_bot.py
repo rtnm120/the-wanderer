@@ -31,7 +31,7 @@ class Bot(commands.Bot):
         self.reset_stock.start()
         self.update_stock.start()
 
-    @tasks.loop(minutes=2)
+    @tasks.loop(minutes=30)
     async def update_stock(self):
         if not self.check_vendors:
             return
