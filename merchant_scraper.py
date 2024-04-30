@@ -20,7 +20,6 @@ def scrape():
         "Balthorr",
         "Vairgrys",
         "Varkan",
-        "Seria",
         "Thar",
         "Krause",
         "Varut",
@@ -64,22 +63,30 @@ def scrape():
     rare_items = soup.find_all(class_="rarity--Rare")
 
     available_cards = {
-        "Legendary": [],
-        "Epic": [],
-        "Rare": [],
+        "legendary": [],
+        "epic": [],
+        "rare": [],
+        "legendary_rapport": [],
+        "epic_rapport": [],
     }
 
     for item in legendary_items:
         if item.text in card_list:
-            available_cards["Legendary"].append(item.text)
+            available_cards["legendary"].append(item.text)
+
+        if item.text not in card_list and item.text != "Squid":
+            available_cards["legendary_rapport"].append(item.text)
 
     for item in epic_items:
         if item.text in card_list:
-            available_cards["Epic"].append(item.text)
+            available_cards["epic"].append(item.text)
+
+        if item.text not in card_list:
+            available_cards["epic_rapport"].append(item.text)
 
     for item in rare_items:
         if item.text in card_list:
-            available_cards["Rare"].append(item.text)
+            available_cards["rare"].append(item.text)
 
     driver.close()
 
@@ -89,16 +96,16 @@ def scrape():
 if __name__ == "__main__":
     available_cards = scrape()
     if (
-        len(available_cards["Legendary"])
-        or len(available_cards["Epic"])
-        or len(available_cards["Rare"])
+        len(available_cards["legendary"])
+        or len(available_cards["epic"])
+        or len(available_cards["rare"])
     ):
         print("Available Cards:")
-        for card in available_cards["Legendary"]:
+        for card in available_cards["legendary"]:
             print(card)
-        for card in available_cards["Epic"]:
+        for card in available_cards["epic"]:
             print(card)
-        for card in available_cards["Rare"]:
+        for card in available_cards["rare"]:
             print(card)
     else:
         print("No Cards Available")
